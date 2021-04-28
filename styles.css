@@ -1,4 +1,25 @@
-/* Sets all the text color to red! */
-body {
-    color: red;
+
+
+/* Enlightenment – active leaf only */
+.plugin-enlightenment-active-pane .mod-active .markdown-preview-view :not(:hover) {
+    opacity: .5;
+}
+
+.plugin-enlightenment-active-pane .mod-active .markdown-preview-view :hover {
+    opacity: 1;
+}
+
+.plugin-enlightenment-active-pane :not(.mod-active) {
+    opacity: 1;
+}
+
+
+
+/* Enlightenment - all panes */
+.plugin-enlightenment-full .markdown-preview-view :not(:hover) {
+    opacity: .5;
+}
+
+.plugin-enlightenment-full .markdown-preview-view :hover {
+    opacity: 1;
 }
