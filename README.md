@@ -10,10 +10,11 @@ Enlightenment makes it easier to focus. It fades out the contents of previewed n
 
 There are two modes. In the "full" mode, enlightenment fades out the content of every previewed note. In the "active pane" mode, it only works on the currently-active pane.
 
-### Manually installing the plugin
+![A video demo of Enlightenment.](https://user-images.githubusercontent.com/3618647/116448582-8344c080-a816-11eb-96be-24be44c6943b.gif)
+
+### Installing the plugin
+Find it in the in-app Community Plugins gallery.
+
+#### Manually installing the plugin
 
 - Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/enlightenment-obsidian/`.
-
-### API Documentation
-
-See https://github.com/obsidianmd/obsidian-api
