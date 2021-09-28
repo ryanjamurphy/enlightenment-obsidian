@@ -34,16 +34,9 @@ export default class EnlightenmentPlugin extends Plugin {
 		this.addCommand({
 			id: 'enable-enlightenment',
 			name: 'Enable Enlightenment (across all panes)',
-			checkCallback: (checking: boolean) => {
-				let leaf = this.app.workspace.activeLeaf;
-				if (leaf) {
-					if (!checking) {
-						this.removeStyle();
-						this.addStyle('full');
-					}
-					return true;
-				}
-				return false;
+			callback: () => {
+				this.removeStyle();
+				this.addStyle('full');
 			}
 		});
 
@@ -66,15 +59,8 @@ export default class EnlightenmentPlugin extends Plugin {
 		this.addCommand({
 			id: 'disable-enlightenment',
 			name: 'Disable Enlightenment',
-			checkCallback: (checking: boolean) => {
-				let leaf = this.app.workspace.activeLeaf;
-				if (leaf) {
-					if (!checking) {
-						this.removeStyle();
-					}
-					return true;
-				}
-				return false;
+			callback: () => {
+				this.removeStyle();
 			}
 		});
 	}
