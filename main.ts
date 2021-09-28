@@ -1,3 +1,4 @@
+require('dotenv').config()
 import { addIcon, Plugin } from 'obsidian';
 
 addIcon('enlightenment-sparkles', `<?xml version="1.0" encoding="UTF-8" standalone="no"?> // Torch icon modified from Flat Icon/Freepik: https://www.flaticon.com/free-icon/shines_764690?term=shine&page=1&position=5&page=1&position=5&related_id=764690&origin=search
