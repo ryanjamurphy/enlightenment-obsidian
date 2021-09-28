@@ -2,6 +2,9 @@ import dotenv from 'dotenv';
 import typescript from '@rollup/plugin-typescript';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import copy from 'rollup-plugin-copy';
+
+dotenv.config();
 
 const isProd = (process.env.BUILD === 'production');
 
@@ -12,7 +15,7 @@ if you want to view the source visit the plugins github repository
 */
 `;
 
-export default {
+const output = [ {
   input: 'main.ts',
   output: {
     dir: '.',
@@ -28,11 +31,11 @@ export default {
     nodeResolve({browser: true}),
     commonjs(),
   ]
-};
+}];
 
 if (process.env.PLUGIN_DEST) { // Thanks, @mgmeyers!
   output.push({
-    input: "./src/main.ts",
+    input: "./main.ts",
     output: {
       dir: process.env.PLUGIN_DEST,
       sourcemap: "inline",
@@ -42,7 +45,6 @@ if (process.env.PLUGIN_DEST) { // Thanks, @mgmeyers!
     },
     external: ["obsidian"],
     plugins: [
-      css({ output: "styles.css" }),
       typescript(),
       nodeResolve({ browser: true }),
       commonjs(),
@@ -55,3 +57,5 @@ if (process.env.PLUGIN_DEST) { // Thanks, @mgmeyers!
     ],
   });
 }
+
+export default output;
