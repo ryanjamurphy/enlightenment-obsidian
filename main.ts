@@ -85,7 +85,7 @@ export default class EnlightenmentPlugin extends Plugin {
 		
 	}
 
-	addStyle(enlightenmentType: string) {
+	addStyle = (enlightenmentType: string) => {
 		const css = document.createElement('style');
 		document.getElementsByTagName('head')[0].appendChild(css);
 		if (enlightenmentType == 'full') {
