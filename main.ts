@@ -1,4 +1,4 @@
-import { addIcon, Plugin } from 'obsidian';
+import { addIcon, Plugin, Notice } from 'obsidian';
 
 addIcon('enlightenment-sparkles', `<?xml version='1.0' encoding='UTF-8' standalone='no'?> // Torch icon modified from Flat Icon/Freepik: https://www.flaticon.com/free-icon/shines_764690?term=shine&page=1&position=5&page=1&position=5&related_id=764690&origin=search
 <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
@@ -61,6 +61,7 @@ export default class EnlightenmentPlugin extends Plugin {
 			name: 'Disable Enlightenment',
 			callback: () => {
 				this.removeStyle();
+				new Notice("Enlightenment disabled.");
 			}
 		});
 	}
@@ -78,6 +79,7 @@ export default class EnlightenmentPlugin extends Plugin {
 			this.addStyle('active-pane');
 		} else if (activePaneEnlightenment) {
 			this.removeStyle();
+			new Notice("Enlightenment disabled.");
 		} else {
 			this.removeStyle();
 			this.addStyle('full');
@@ -91,9 +93,11 @@ export default class EnlightenmentPlugin extends Plugin {
 		if (enlightenmentType == 'full') {
 			document.body.classList.add('plugin-enlightenment-full');
 			css.id = 'plugin-enlightenment-full';
+			new Notice("Enlightenment enabled across all Preview panes.");
 		} else if (enlightenmentType == 'active-pane') {
 			document.body.classList.add('plugin-enlightenment-active-pane');
 			css.id = 'plugin-enlightenment-active-pane';
+			new Notice("Enlightenment enabled on the active pane.");
 		}
 	}
 
