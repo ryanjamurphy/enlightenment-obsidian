@@ -2,24 +2,24 @@
 
 /* Enlightenment – active leaf only */
 .plugin-enlightenment-active-pane .mod-active .markdown-preview-view :not(:hover) {
-    opacity: .5;
+    opacity: var(--background-transparency);
 }
 
 .plugin-enlightenment-active-pane .mod-active .markdown-preview-view :hover {
-    opacity: 1;
+    opacity: var(--focus-opacity);
 }
 
 .plugin-enlightenment-active-pane :not(.mod-active) {
-    opacity: 1;
+    opacity: var(--focus-opacity);
 }
 
 
 
 /* Enlightenment - all panes */
 .plugin-enlightenment-full .markdown-preview-view :not(:hover) {
-    opacity: .5;
+    opacity: var(--background-transparency);
 }
 
 .plugin-enlightenment-full .markdown-preview-view :hover {
-    opacity: 1;
+    opacity: var(--focus-opacity);
 }

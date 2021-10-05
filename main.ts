@@ -1,4 +1,5 @@
-import { addIcon, Plugin, Notice } from 'obsidian';
+import { addIcon, App, Plugin, Notice, PluginSettingTab, Setting, SliderComponent } from 'obsidian';
+import { rootCertificates } from 'tls';
 
 addIcon('enlightenment-sparkles', `<?xml version='1.0' encoding='UTF-8' standalone='no'?> // Torch icon modified from Flat Icon/Freepik: https://www.flaticon.com/free-icon/shines_764690?term=shine&page=1&position=5&page=1&position=5&related_id=764690&origin=search
 <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
@@ -20,11 +21,29 @@ addIcon('enlightenment-sparkles', `<?xml version='1.0' encoding='UTF-8' standalo
 			S500.863,257.732,493.243,256.135z'/>
 `);
 
+interface EnlightenmentSettings {
+	backgroundTransparency: number,
+	focusOpacity: number
+}
+
+const DEFAULT_SETTINGS: EnlightenmentSettings = {
+	backgroundTransparency: .5,
+	focusOpacity: 1
+}
+
 
 export default class EnlightenmentPlugin extends Plugin {
 
+	settings: EnlightenmentSettings;
+
 	async onload() {
 		console.log('Loading the Enlightenment plugin.');
+
+		await this.loadSettings();
+
+		let root = document.documentElement;
+		root.style.setProperty('--background-transparency', this.settings.backgroundTransparency.toString());
+		root.style.setProperty('--focus-opacity', this.settings.focusOpacity.toString());
 
 
 		this.addRibbonIcon('enlightenment-sparkles', 'Cycle through Enlightenment modes (off, across all panes, or the activeed pane only)', () => {
@@ -64,6 +83,8 @@ export default class EnlightenmentPlugin extends Plugin {
 				new Notice("Enlightenment disabled.");
 			}
 		});
+
+		this.addSettingTab(new EnlightenmentSettingsTab(this.app, this));
 	}
 
 	onunload() {
@@ -103,4 +124,56 @@ export default class EnlightenmentPlugin extends Plugin {
 		bodyElement.classList.remove('plugin-enlightenment-full'); 
 		bodyElement.classList.remove('plugin-enlightenment-active-pane');
 	  }
+
+	async loadSettings() {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+	}
+
+	async saveSettings() {
+		await this.saveData(this.settings);
+	  }
+	  
+}
+
+class EnlightenmentSettingsTab extends PluginSettingTab {
+	plugin: EnlightenmentPlugin;
+
+	constructor(app: App, plugin: EnlightenmentPlugin) {
+		super(app, plugin);
+		this.plugin = plugin;
+	}
+
+	display(): void {
+		let {containerEl} = this;
+
+		containerEl.empty();
+
+		containerEl.createEl('h2', {text: 'Enlightenment Settings'});
+
+		new Setting(containerEl)
+			.setName('Background Transparency')
+			.setDesc('Set the transparency for items in the background. The default is .5.')
+			.addSlider(slider => slider
+				.setValue(this.plugin.settings.backgroundTransparency)
+				.setLimits(0, 1, .05)
+				.onChange(async (value) => {
+					this.plugin.settings.backgroundTransparency = (value);
+					let root = document.documentElement;
+					root.style.setProperty('--background-transparency', value.toString());
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
+			.setName('Focus Opacity')
+			.setDesc('Set the opacity for items you\'re focusing on. The default is .5.')
+			.addSlider(slider => slider
+				.setValue(this.plugin.settings.focusOpacity)
+				.setLimits(0, 1, .05)
+				.onChange(async (value) => {
+					this.plugin.settings.focusOpacity = (value);
+					let root = document.documentElement;
+					root.style.setProperty('--focus-opacity', value.toString());
+					await this.plugin.saveSettings();
+				}));
+			}
 }
