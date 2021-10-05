@@ -72,8 +72,8 @@ export default class EnlightenmentPlugin extends Plugin {
 	}
 
 	cycleEnlightenmentMode = () => {
-		const fullEnlightenment = document.getElementById('plugin-enlightenment-full');
-		const activePaneEnlightenment = document.getElementById('plugin-enlightenment-active-pane');
+		const fullEnlightenment = document.body.classList.contains('plugin-enlightenment-full');
+		const activePaneEnlightenment = document.body.classList.contains('plugin-enlightenment-active-pane');
 		if (fullEnlightenment) {
 			this.removeStyle();
 			this.addStyle('active-pane');
@@ -88,26 +88,19 @@ export default class EnlightenmentPlugin extends Plugin {
 	}
 
 	addStyle = (enlightenmentType: string) => {
-		const css = document.createElement('style');
-		document.getElementsByTagName('head')[0].appendChild(css);
+		const bodyElement = document.body;
 		if (enlightenmentType == 'full') {
-			document.body.classList.add('plugin-enlightenment-full');
-			css.id = 'plugin-enlightenment-full';
+			bodyElement.classList.add('plugin-enlightenment-full');
 			new Notice("Enlightenment enabled across all Preview panes.");
 		} else if (enlightenmentType == 'active-pane') {
-			document.body.classList.add('plugin-enlightenment-active-pane');
-			css.id = 'plugin-enlightenment-active-pane';
+			bodyElement.classList.add('plugin-enlightenment-active-pane');
 			new Notice("Enlightenment enabled on the active pane.");
 		}
 	}
 
-	removeStyle = () => { // Thanks, @death_au!
-		const fullEnlightenment = document.getElementById('plugin-enlightenment-full');
-		if (fullEnlightenment) fullEnlightenment.remove();
-		const activePaneEnlightenment = document.getElementById('plugin-enlightenment-active-pane');
-		if (activePaneEnlightenment) activePaneEnlightenment.remove();
-		document.body.classList.remove('plugin-enlightenment');
-		document.body.classList.remove('plugin-enlightenment-full'); 
-		document.body.classList.remove('plugin-enlightenment-active-pane');
+	removeStyle = () => {
+		const bodyElement = document.body;
+		bodyElement.classList.remove('plugin-enlightenment-full'); 
+		bodyElement.classList.remove('plugin-enlightenment-active-pane');
 	  }
 }

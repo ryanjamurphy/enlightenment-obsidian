@@ -33,11 +33,11 @@ const output = [ {
   ]
 }];
 
-if (process.env.PLUGIN_DEST) { // Thanks, @mgmeyers!
+if (process.env.macOS_Destination) { // Thanks, @mgmeyers!
   output.push({
     input: "./main.ts",
     output: {
-      dir: process.env.PLUGIN_DEST,
+      dir: process.env.macOS_Destination,
       sourcemap: "inline",
       format: "cjs",
       exports: "default",
@@ -50,8 +50,58 @@ if (process.env.PLUGIN_DEST) { // Thanks, @mgmeyers!
       commonjs(),
       copy({
         targets: [
-          { src: "./manifest.json", dest: process.env.PLUGIN_DEST },
-          { src: "./styles.css", dest: process.env.PLUGIN_DEST },
+          { src: "./manifest.json", dest: process.env.macOS_Destination },
+          { src: "./styles.css", dest: process.env.macOS_Destination },
+        ],
+      }),
+    ],
+  });
+}
+
+if (process.env.iPadOS_Destination) { // Thanks, @mgmeyers!
+  output.push({
+    input: "./main.ts",
+    output: {
+      dir: process.env.iPadOS_Destination,
+      sourcemap: "inline",
+      format: "cjs",
+      exports: "default",
+      banner,
+    },
+    external: ["obsidian"],
+    plugins: [
+      typescript(),
+      nodeResolve({ browser: true }),
+      commonjs(),
+      copy({
+        targets: [
+          { src: "./manifest.json", dest: process.env.iPadOS_Destination },
+          { src: "./styles.css", dest: process.env.iPadOS_Destination },
+        ],
+      }),
+    ],
+  });
+}
+
+if (process.env.iOS_Destination) { // Thanks, @mgmeyers!
+  output.push({
+    input: "./main.ts",
+    output: {
+      dir: process.env.iOS_Destination,
+      sourcemap: "inline",
+      format: "cjs",
+      exports: "default",
+      banner,
+    },
+    external: ["obsidian"],
+    plugins: [
+      typescript(),
+      nodeResolve({ browser: true }),
+      commonjs(),
+      copy({
+        targets: [
+          { src: "./manifest.json", dest: process.env.iOS_Destination },
+          { src: "./styles.css", dest: process.env.iOS_Destination },
         ],
       }),
     ],
