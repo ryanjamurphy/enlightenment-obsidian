@@ -1,25 +1,22 @@
-
-
-/* Enlightenment – active leaf only */
-.plugin-enlightenment-active-pane .mod-active .markdown-preview-view :not(:hover) {
-    opacity: var(--background-transparency);
+/* Enlightenment - Only the active pane */
+.plugin-enlightenment-active-pane .mod-active .view-content :is(.markdown-preview-section, .markdown-source-view, .markdown-preview-view) > * :not(:hover) {
+    opacity: var(--enlightenment-background-transparency);
 }
 
-.plugin-enlightenment-active-pane .mod-active .markdown-preview-view :hover {
-    opacity: var(--focus-opacity);
+.plugin-enlightenment-active-pane .mod-active .view-content :is(.markdown-preview-section, .markdown-source-view, .markdown-preview-view) > * :hover {
+    opacity: var(--enlightenment-focus-opacity);
 }
 
 .plugin-enlightenment-active-pane :not(.mod-active) {
-    opacity: var(--focus-opacity);
+    opacity: revert;
 }
 
 
-
-/* Enlightenment - all panes */
-.plugin-enlightenment-full .markdown-preview-view :not(:hover) {
-    opacity: var(--background-transparency);
+/* Enlightenment - All panes */
+.plugin-enlightenment-all-panes .view-content :is(.markdown-preview-section, .markdown-source-view, .markdown-preview-view) > * :not(:hover) {
+    opacity: var(--enlightenment-background-transparency);
 }
 
-.plugin-enlightenment-full .markdown-preview-view :hover {
-    opacity: var(--focus-opacity);
+.plugin-enlightenment-all-panes .view-content :is(.markdown-preview-section, .markdown-source-view, .markdown-preview-view) > * :hover {
+    opacity: var(--enlightenment-focus-opacity);
 }

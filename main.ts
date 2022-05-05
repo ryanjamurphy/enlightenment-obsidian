@@ -1,7 +1,7 @@
 import { addIcon, App, Plugin, Notice, PluginSettingTab, Setting, SliderComponent } from 'obsidian';
 import { rootCertificates } from 'tls';
 
-addIcon('enlightenment-sparkles', `<?xml version='1.0' encoding='UTF-8' standalone='no'?> // Torch icon modified from Flat Icon/Freepik: https://www.flaticon.com/free-icon/shines_764690?term=shine&page=1&position=5&page=1&position=5&related_id=764690&origin=search
+addIcon('enlightenment-sparkles', `<?xml version='1.0' encoding='UTF-8' standalone='no'?>) // Torch icon modified from Flat Icon/Freepik: https://www.flaticon.com/free-icon/shines_764690?term=shine&page=1&position=5&page=1&position=5&related_id=764690&origin=search
 <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
 <svg viewBox='0 0 512 512'>
 <path fill='currentColor' stroke='currentColor' d='M298.138,136.665c-62.065-13.011-110.576-61.522-123.585-123.588C172.955,5.458,166.235,0,158.448,0
@@ -21,13 +21,15 @@ addIcon('enlightenment-sparkles', `<?xml version='1.0' encoding='UTF-8' standalo
 			S500.863,257.732,493.243,256.135z'/>
 `);
 
+type EnlightenmentType = "all-panes" | "active-pane" | "none"
+
 interface EnlightenmentSettings {
 	backgroundTransparency: number,
 	focusOpacity: number
 }
 
 const DEFAULT_SETTINGS: EnlightenmentSettings = {
-	backgroundTransparency: .5,
+	backgroundTransparency: .7,
 	focusOpacity: 1
 }
 
@@ -37,16 +39,16 @@ export default class EnlightenmentPlugin extends Plugin {
 	settings: EnlightenmentSettings;
 
 	async onload() {
-		console.log('Loading the Enlightenment plugin.');
+		console.log('Loading the Enlightenment plugin v1.');
 
 		await this.loadSettings();
 
 		let root = document.documentElement;
-		root.style.setProperty('--background-transparency', this.settings.backgroundTransparency.toString());
-		root.style.setProperty('--focus-opacity', this.settings.focusOpacity.toString());
+		root.style.setProperty('--enlightenment-background-transparency', this.settings.backgroundTransparency.toString());
+		root.style.setProperty('--enlightenment-focus-opacity', this.settings.focusOpacity.toString());
 
 
-		this.addRibbonIcon('enlightenment-sparkles', 'Cycle through Enlightenment modes (off, across all panes, or the activeed pane only)', () => {
+		this.addRibbonIcon('enlightenment-sparkles', 'Cycle through Enlightenment modes (off, across all panes, or the active pane only)', () => {
 			this.cycleEnlightenmentMode();
 		});
 
@@ -54,24 +56,15 @@ export default class EnlightenmentPlugin extends Plugin {
 			id: 'enable-enlightenment',
 			name: 'Enable Enlightenment (across all panes)',
 			callback: () => {
-				this.removeStyle();
-				this.addStyle('full');
+				this.changeEnlightenmentMode('all-panes');
 			}
 		});
 
 		this.addCommand({
 			id: 'enable-enlightenment-active-pane',
 			name: 'Enable Enlightenment (only on the active pane)',
-			checkCallback: (checking: boolean) => {
-				let leaf = this.app.workspace.activeLeaf;
-				if (leaf) {
-					if (!checking) {
-						this.removeStyle();
-						this.addStyle('active-pane');
-					}
-					return true;
-				}
-				return false;
+			callback: () => {
+				this.changeEnlightenmentMode('active-pane');
 			}
 		});
 
@@ -79,8 +72,7 @@ export default class EnlightenmentPlugin extends Plugin {
 			id: 'disable-enlightenment',
 			name: 'Disable Enlightenment',
 			callback: () => {
-				this.removeStyle();
-				new Notice("Enlightenment disabled.");
+				this.changeEnlightenmentMode('none');
 			}
 		});
 
@@ -93,36 +85,34 @@ export default class EnlightenmentPlugin extends Plugin {
 	}
 
 	cycleEnlightenmentMode = () => {
-		const fullEnlightenment = document.body.classList.contains('plugin-enlightenment-full');
-		const activePaneEnlightenment = document.body.classList.contains('plugin-enlightenment-active-pane');
-		if (fullEnlightenment) {
-			this.removeStyle();
-			this.addStyle('active-pane');
+		const allPanesEnlightenment = document.body.hasClass('plugin-enlightenment-all-panes');
+		const activePaneEnlightenment = document.body.hasClass('plugin-enlightenment-active-pane');
+		if (allPanesEnlightenment) {
+			this.changeEnlightenmentMode('active-pane');
 		} else if (activePaneEnlightenment) {
-			this.removeStyle();
-			new Notice("Enlightenment disabled.");
+			this.changeEnlightenmentMode('none');
 		} else {
-			this.removeStyle();
-			this.addStyle('full');
+			this.changeEnlightenmentMode('all-panes');
 		}
 		
 	}
 
-	addStyle = (enlightenmentType: string) => {
+	changeEnlightenmentMode = (someEnlightenmentType : EnlightenmentType) => {
 		const bodyElement = document.body;
-		if (enlightenmentType == 'full') {
-			bodyElement.classList.add('plugin-enlightenment-full');
-			new Notice("Enlightenment enabled across all Preview panes.");
-		} else if (enlightenmentType == 'active-pane') {
-			bodyElement.classList.add('plugin-enlightenment-active-pane');
-			new Notice("Enlightenment enabled on the active pane.");
+		bodyElement.removeClasses(['plugin-enlightenment-all-panes', 'plugin-enlightenment-active-pane']); 
+		if (someEnlightenmentType == 'all-panes') {
+			bodyElement.addClass('plugin-enlightenment-all-panes');
+			new Notice("Enlightenment enabled across all panes.");
+		} else if (someEnlightenmentType == 'active-pane') {
+			bodyElement.addClass('plugin-enlightenment-active-pane');
+			new Notice("Enlightenment enabled only for the active pane.");
+		} else if (someEnlightenmentType == 'none') {
+			new Notice("Enlightenment disabled.");
 		}
 	}
 
 	removeStyle = () => {
 		const bodyElement = document.body;
-		bodyElement.classList.remove('plugin-enlightenment-full'); 
-		bodyElement.classList.remove('plugin-enlightenment-active-pane');
 	  }
 
 	async loadSettings() {
@@ -152,28 +142,32 @@ class EnlightenmentSettingsTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Background Transparency')
-			.setDesc('Set the transparency for items in the background. The default is .5.')
+			.setDesc('Set the transparency for items in the background. The default is .7.')
 			.addSlider(slider => slider
-				.setValue(this.plugin.settings.backgroundTransparency)
+				.setDynamicTooltip()
 				.setLimits(0, 1, .05)
+				.setValue(this.plugin.settings.backgroundTransparency)
 				.onChange(async (value) => {
 					this.plugin.settings.backgroundTransparency = (value);
 					let root = document.documentElement;
-					root.style.setProperty('--background-transparency', value.toString());
-					await this.plugin.saveSettings();
+					root.style.setProperty('--enlightenment-background-transparency', value.toString());
+					console.log(root.style.getPropertyValue("--enlightenment-background-transparency"));
+					this.plugin.saveSettings();
 				}));
 
 		new Setting(containerEl)
 			.setName('Focus Opacity')
-			.setDesc('Set the opacity for items you\'re focusing on. The default is .5.')
+			.setDesc('Set the opacity for items you\'re focusing on. The default is 1.')
 			.addSlider(slider => slider
-				.setValue(this.plugin.settings.focusOpacity)
+				.setDynamicTooltip()
 				.setLimits(0, 1, .05)
+				.setValue(this.plugin.settings.focusOpacity)
 				.onChange(async (value) => {
 					this.plugin.settings.focusOpacity = (value);
 					let root = document.documentElement;
-					root.style.setProperty('--focus-opacity', value.toString());
-					await this.plugin.saveSettings();
+					root.style.setProperty('--enlightenment-focus-opacity', value.toString());
+					console.log(root.style.getPropertyValue("--enlightenment-focus-opacity"));
+					this.plugin.saveSettings();
 				}));
 			}
 }
