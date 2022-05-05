@@ -6,7 +6,7 @@ The ability to focus on what you want to focus on is a crucial skill. It helps y
 
 Too bad controlling your attention can be really hard. Damned brain!
 
-Enlightenment makes it easier to focus. It fades out the contents of previewed notes except for whatever's currently under your pointer. (Technically, it can also do the opposite, _hiding_ whatever is underneath your pointer while showing you everything else. What? I wasn't going to do extra work to prevent you from using it wrong. Yes, I know. Listen. Listen to me! Sometimes, you have to take charge. _Be the user you want to be!_)
+Enlightenment makes it easier to focus. It fades out the contents of your notes except for whatever's currently under your pointer. (Technically, it can also do the opposite, _hiding_ whatever is underneath your pointer while showing you everything else. What? I wasn't going to do extra work to prevent you from using it wrong. Yes, I know. Now, listen. Listen to me! Sometimes, you have to take charge. _Be the user you want to see in the world!_)
 
 There are two modes. In the "all panes" mode, enlightenment fades out the content of every previewed note. In the "active pane" mode, it only works on the currently-active pane.
 
