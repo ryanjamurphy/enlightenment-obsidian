@@ -6,7 +6,7 @@ Too bad controlling your attention can be really hard. Damned brain!
 
 Enlightenment makes it easier to focus. It fades out the contents of your notes except for whatever's currently under your pointer. (Technically, it can also do the opposite, _hiding_ whatever is underneath your pointer while showing you everything else. ...What? I wasn't going to do extra work to prevent you from using it wrong. Yes, I know, now there's nothing stopping you from—now, listen. Listen to me! Sometimes, you have to take charge. _Be the user you want to see in the world!_ I believe in you.)
 
-There are two modes. In the "all panes" mode, enlightenment fades out the content of every note. In the "active pane" mode, it only works on the currently-active pane.
+There are three modes. In the "all panes" mode, enlightenment fades out the content of every note. In the "active pane" mode, it only works on the currently-active pane. Last, in the "inactive panes" mode, enlightenment fades all inactive panes.
 
 ![A video demo of Enlightenment.](https://user-images.githubusercontent.com/3618647/116448582-8344c080-a816-11eb-96be-24be44c6943b.gif)
 
