@@ -1,6 +1,6 @@
 {
   "name": "enlightenment-obsidian",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Pay attention to what you're paying attention to. Enlightenment adds a 'zen mode' for Preview, hiding the contents of your notes except for what's underneath your pointer.",
   "main": "main.js",
   "scripts": {

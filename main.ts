@@ -1,5 +1,4 @@
 import { addIcon, App, Plugin, Notice, PluginSettingTab, Setting, SliderComponent } from 'obsidian';
-import { rootCertificates } from 'tls';
 
 addIcon('enlightenment-sparkles', `<?xml version='1.0' encoding='UTF-8' standalone='no'?>) // Torch icon modified from Flat Icon/Freepik: https://www.flaticon.com/free-icon/shines_764690?term=shine&page=1&position=5&page=1&position=5&related_id=764690&origin=search
 <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
@@ -21,7 +20,7 @@ addIcon('enlightenment-sparkles', `<?xml version='1.0' encoding='UTF-8' standalo
 			S500.863,257.732,493.243,256.135z'/>
 `);
 
-type EnlightenmentType = "all-panes" | "active-pane" | "none"
+type EnlightenmentType = "all-panes" | "active-pane" | "inactive-panes" | "none"
 
 interface EnlightenmentSettings {
 	backgroundTransparency: number,
@@ -69,6 +68,14 @@ export default class EnlightenmentPlugin extends Plugin {
 		});
 
 		this.addCommand({
+			id: 'enable-enlightenment-inactive-panes',
+			name: 'Enable Enlightenment (only on inactive panes)',
+			callback: () => {
+				this.changeEnlightenmentMode('inactive-panes');
+			}
+		});
+
+		this.addCommand({
 			id: 'disable-enlightenment',
 			name: 'Disable Enlightenment',
 			callback: () => {
@@ -81,15 +88,18 @@ export default class EnlightenmentPlugin extends Plugin {
 
 	onunload() {
 		console.log('Unloading the Enlightenment plugin.');
-		this.removeStyle();
+		this.changeEnlightenmentMode("none");
 	}
 
 	cycleEnlightenmentMode = () => {
 		const allPanesEnlightenment = document.body.hasClass('plugin-enlightenment-all-panes');
 		const activePaneEnlightenment = document.body.hasClass('plugin-enlightenment-active-pane');
+		const inactivePanesEnlightenment = document.body.hasClass('plugin-enlightenment-inactive-panes');
 		if (allPanesEnlightenment) {
 			this.changeEnlightenmentMode('active-pane');
 		} else if (activePaneEnlightenment) {
+			this.changeEnlightenmentMode('inactive-panes');
+		} else if (inactivePanesEnlightenment) {
 			this.changeEnlightenmentMode('none');
 		} else {
 			this.changeEnlightenmentMode('all-panes');
@@ -99,21 +109,20 @@ export default class EnlightenmentPlugin extends Plugin {
 
 	changeEnlightenmentMode = (someEnlightenmentType : EnlightenmentType) => {
 		const bodyElement = document.body;
-		bodyElement.removeClasses(['plugin-enlightenment-all-panes', 'plugin-enlightenment-active-pane']); 
+		bodyElement.removeClasses(['plugin-enlightenment-all-panes', 'plugin-enlightenment-active-pane', 'plugin-enlightenment-inactive-panes']); 
 		if (someEnlightenmentType == 'all-panes') {
 			bodyElement.addClass('plugin-enlightenment-all-panes');
 			new Notice("Enlightenment enabled across all panes.");
 		} else if (someEnlightenmentType == 'active-pane') {
 			bodyElement.addClass('plugin-enlightenment-active-pane');
 			new Notice("Enlightenment enabled only for the active pane.");
+		} else if (someEnlightenmentType == 'inactive-panes') {
+			bodyElement.addClass('plugin-enlightenment-inactive-panes');
+			new Notice("Enlightenment enabled only for inactive panes.");
 		} else if (someEnlightenmentType == 'none') {
 			new Notice("Enlightenment disabled.");
 		}
 	}
-
-	removeStyle = () => {
-		const bodyElement = document.body;
-	  }
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
