@@ -8,7 +8,7 @@ Enlightenment makes it easier to focus. It fades out the contents of your notes 
 
 There are three modes. In the "all panes" mode, enlightenment fades out the content of every note. In the "active pane" mode, it only works on the currently-active pane. Last, in the "inactive panes" mode, enlightenment fades all inactive panes.
 
-![A video demo of Enlightenment.](https://user-images.githubusercontent.com/3618647/116448582-8344c080-a816-11eb-96be-24be44c6943b.gif)
+![A video demo of Enlightenment.](https://user-images.githubusercontent.com/3618647/166983349-08cc8182-64a5-4695-ac3c-344ba8d561da.gif)
 
 ### Installing the plugin
 Find it in the in-app Community Plugins gallery. Tap "Install," then tap "enable."
