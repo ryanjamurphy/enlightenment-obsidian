@@ -26,7 +26,7 @@ export default class EnlightenmentPlugin extends Plugin {
 	settings: EnlightenmentSettings;
 
 	async onload() {
-		console.log('Loading the Enlightenment plugin v1.');
+		console.debug('Loading the Enlightenment plugin v1.2.1.');
 
 		await this.loadSettings();
 
@@ -75,7 +75,7 @@ export default class EnlightenmentPlugin extends Plugin {
 	}
 
 	onunload() {
-		console.log('Unloading the Enlightenment plugin.');
+		console.debug('Unloading the Enlightenment plugin.');
 		this.changeEnlightenmentMode("none");
 	}
 
@@ -148,7 +148,7 @@ class EnlightenmentSettingsTab extends PluginSettingTab {
 					this.plugin.settings.backgroundTransparency = (value);
 					let root = document.documentElement;
 					root.style.setProperty('--enlightenment-background-transparency', value.toString());
-					console.log(root.style.getPropertyValue("--enlightenment-background-transparency"));
+					console.debug(root.style.getPropertyValue("--enlightenment-background-transparency"));
 					this.plugin.saveSettings();
 				}));
 
@@ -163,7 +163,7 @@ class EnlightenmentSettingsTab extends PluginSettingTab {
 					this.plugin.settings.focusOpacity = (value);
 					let root = document.documentElement;
 					root.style.setProperty('--enlightenment-focus-opacity', value.toString());
-					console.log(root.style.getPropertyValue("--enlightenment-focus-opacity"));
+					console.debug(root.style.getPropertyValue("--enlightenment-focus-opacity"));
 					this.plugin.saveSettings();
 				}));
 			}
